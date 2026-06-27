@@ -49,7 +49,7 @@ proc pack*(opts: Options, target: Target): bool =
   display("Packing", fmt"files for target {target.name} into {file}")
 
   var
-    manifest = parseManifest(target.name)
+    manifest = parseManifest("pack" / target.name)
 
   if fileExists(file):
     if (manifest.getChangedFiles(cacheDir).len == 0):
