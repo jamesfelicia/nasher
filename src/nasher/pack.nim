@@ -116,12 +116,16 @@ proc pack*(opts: Options, target: Target): bool =
           return cmd != "pack"
 
     createErf(packDir, file, bin, args)
-
+  #Packed files might vary slightly from the original source, so we will write the packed SHA-1 to the manifest.
+  var
+    targetManifest = parseManifest(target.name)
   for file in walkFiles(cacheDir / "*"):
     if file.splitFile.ext != ".ncs":
       manifest.add(file, fileTime)
+      targetManifest.add(file, fileTime)
 
   manifest.write
+  targetManifest.write
 
   success("packed " & file)
   setLastModificationTime(file, fileTime)
